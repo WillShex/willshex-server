@@ -1,6 +1,6 @@
 //
-//  ContextAwareServelet.java
-//  quickinvoice
+//  ContextAwareServlet.java
+//  spchopr.service_appengine
 //
 //  Created by William Shakour on 19 Jul 2013.
 //  Copyright © 2013 SPACEHOPPER STUDIOS LTD. All rights reserved.
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * 
  */
 @SuppressWarnings("serial")
-public class ContextAwareServelet extends HttpServlet {
+public class ContextAwareServlet extends HttpServlet {
 
 	public static final ThreadLocal<HttpServletRequest> REQUEST = new ThreadLocal<HttpServletRequest>();
 	public static final ThreadLocal<HttpServletResponse> RESPONSE = new ThreadLocal<HttpServletResponse>();
