@@ -9,6 +9,8 @@ package com.willshex.service;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,18 @@ public class ContextAwareServlet extends HttpServlet {
 
 	public static final ThreadLocal<HttpServletRequest> REQUEST = new ThreadLocal<HttpServletRequest>();
 	public static final ThreadLocal<HttpServletResponse> RESPONSE = new ThreadLocal<HttpServletResponse>();
+	public static final ThreadLocal<ServletContext> CONTEXT = new ThreadLocal<ServletContext>();
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
+	 */
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		CONTEXT.set(config.getServletContext());
+		super.init(config);
+	}
 
 	/*
 	 * (non-Javadoc)
