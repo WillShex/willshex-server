@@ -32,10 +32,6 @@ public class ContextAwareServlet extends HttpServlet {
 	@Override
 	protected void doDelete (HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		REQUEST.set(req);
-		RESPONSE.set(resp);
-		CONTEXT.set(this.getServletContext());
-
 		doDelete();
 	}
 
@@ -46,10 +42,6 @@ public class ContextAwareServlet extends HttpServlet {
 	@Override
 	protected void doGet (HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		REQUEST.set(req);
-		RESPONSE.set(resp);
-		CONTEXT.set(this.getServletContext());
-
 		doGet();
 	}
 
@@ -60,10 +52,6 @@ public class ContextAwareServlet extends HttpServlet {
 	@Override
 	protected void doHead (HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		REQUEST.set(req);
-		RESPONSE.set(resp);
-		CONTEXT.set(this.getServletContext());
-
 		doHead();
 	}
 
@@ -74,10 +62,6 @@ public class ContextAwareServlet extends HttpServlet {
 	@Override
 	protected void doOptions (HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		REQUEST.set(req);
-		RESPONSE.set(resp);
-		CONTEXT.set(this.getServletContext());
-
 		doOptions();
 	}
 
@@ -88,10 +72,6 @@ public class ContextAwareServlet extends HttpServlet {
 	@Override
 	protected void doPost (HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		REQUEST.set(req);
-		RESPONSE.set(resp);
-		CONTEXT.set(this.getServletContext());
-
 		doPost();
 	}
 
@@ -102,10 +82,6 @@ public class ContextAwareServlet extends HttpServlet {
 	@Override
 	protected void doPut (HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		REQUEST.set(req);
-		RESPONSE.set(resp);
-		CONTEXT.set(this.getServletContext());
-
 		doPut();
 	}
 
@@ -116,11 +92,31 @@ public class ContextAwareServlet extends HttpServlet {
 	@Override
 	protected void doTrace (HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		doTrace();
+	}
+
+	/* (non-Javadoc)
+	 * 
+	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.
+	 * HttpServletRequest, javax.servlet.http.HttpServletResponse) */
+	@Override
+	protected void service (HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		set(req, resp);
+
+		service();
+
+		super.service(req, resp);
+	}
+
+	/**
+	 * @param req
+	 * @param resp
+	 */
+	protected void set (HttpServletRequest req, HttpServletResponse resp) {
 		REQUEST.set(req);
 		RESPONSE.set(resp);
-		CONTEXT.set(this.getServletContext());
-
-		doTrace();
+		CONTEXT.set(getServletContext());
 	}
 
 	protected void doDelete () throws ServletException, IOException {}
@@ -136,5 +132,7 @@ public class ContextAwareServlet extends HttpServlet {
 	protected void doPut () throws ServletException, IOException {}
 
 	protected void doTrace () throws ServletException, IOException {}
+
+	protected void service () throws ServletException, IOException {}
 
 }
