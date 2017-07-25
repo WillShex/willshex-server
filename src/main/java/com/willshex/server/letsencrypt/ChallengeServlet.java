@@ -8,7 +8,6 @@
 package com.willshex.server.letsencrypt;
 
 import java.io.IOException;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -24,7 +23,8 @@ import com.willshex.server.ContextAwareServlet;
  * @author William Shakour (billy1380)
  *
  */
-@WebServlet(name = "letsencrypt", urlPatterns = ChallengeServlet.ROOT_PATH)
+@WebServlet(name = "letsencrypt", urlPatterns = ChallengeServlet.ROOT_PATH
+		+ "*")
 @ServletSecurity(value = @HttpConstraint(transportGuarantee = TransportGuarantee.NONE))
 public class ChallengeServlet extends ContextAwareServlet {
 
@@ -51,7 +51,6 @@ public class ChallengeServlet extends ContextAwareServlet {
 			return;
 		}
 
-		Properties properties = System.getProperties();
 		String challengeId = REQUEST.get().getRequestURI();
 
 		if (challengeId != null && challengeId.length() > LENGTH) {
@@ -64,15 +63,17 @@ public class ChallengeServlet extends ContextAwareServlet {
 			return;
 		}
 
-		if (System.getProperty(challengeId, null) == null) {
-			LOG.warning("[" + challengeId + "] system property ["
-					+ System.getProperty(challengeId) + "] not found");
+		String challengeResponse = null;
+
+		if ((challengeResponse = System.getProperty(challengeId,
+				null)) == null) {
+			LOG.warning("[" + challengeId + "] system property not found");
 			response.sendError(404);
 			return;
 		}
 
 		response.setContentType("text/plain");
-		response.getOutputStream().print(properties.getProperty(challengeId));
+		response.getOutputStream().print(challengeResponse);
 	}
 
 }
