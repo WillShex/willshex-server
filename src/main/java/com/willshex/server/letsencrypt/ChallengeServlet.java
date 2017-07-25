@@ -33,6 +33,7 @@ public class ChallengeServlet extends ContextAwareServlet {
 	private static final Logger LOG = Logger
 			.getLogger(ChallengeServlet.class.getName());
 	public static final String ROOT_PATH = "/.well-known/acme-challenge/";
+	private static final int LENGTH = ROOT_PATH.length();
 
 	/* (non-Javadoc)
 	 * 
@@ -51,8 +52,17 @@ public class ChallengeServlet extends ContextAwareServlet {
 		}
 
 		Properties properties = System.getProperties();
-		String challengeId = REQUEST.get().getRequestURI()
-				.substring(ROOT_PATH.length());
+		String challengeId = REQUEST.get().getRequestURI();
+
+		if (challengeId != null && challengeId.length() > LENGTH) {
+			challengeId = challengeId.substring(LENGTH);
+		}
+
+		if (challengeId == null) {
+			LOG.severe("Challenge id was null");
+			response.sendError(500);
+			return;
+		}
 
 		if (System.getProperty(challengeId, null) == null) {
 			LOG.warning("[" + challengeId + "] system property ["
