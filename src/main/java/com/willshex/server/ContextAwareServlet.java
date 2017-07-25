@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * 
  */
 @SuppressWarnings("serial")
-public class ContextAwareServlet extends HttpServlet {
+public abstract class ContextAwareServlet extends HttpServlet {
 
 	public static final ThreadLocal<HttpServletRequest> REQUEST = new ThreadLocal<HttpServletRequest>();
 	public static final ThreadLocal<HttpServletResponse> RESPONSE = new ThreadLocal<HttpServletResponse>();

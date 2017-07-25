@@ -12,6 +12,10 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
+import javax.servlet.annotation.ServletSecurity.TransportGuarantee;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletResponse;
 
 import com.willshex.server.ContextAwareServlet;
@@ -20,13 +24,15 @@ import com.willshex.server.ContextAwareServlet;
  * @author William Shakour (billy1380)
  *
  */
+@WebServlet(name = "letsencrypt", urlPatterns = ChallengeServlet.ROOT_PATH)
+@ServletSecurity(value = @HttpConstraint(transportGuarantee = TransportGuarantee.NONE))
 public class ChallengeServlet extends ContextAwareServlet {
 
 	private static final long serialVersionUID = 4205103893856450963L;
 
 	private static final Logger LOG = Logger
 			.getLogger(ChallengeServlet.class.getName());
-	private static final String ROOT_PATH = "/.well-known/acme-challenge/";
+	public static final String ROOT_PATH = "/.well-known/acme-challenge/";
 
 	/* (non-Javadoc)
 	 * 
@@ -46,7 +52,7 @@ public class ChallengeServlet extends ContextAwareServlet {
 
 		Properties properties = System.getProperties();
 		String challengeId = REQUEST.get().getRequestURI()
-				.substring("/.well-known/acme-challenge/".length());
+				.substring(ROOT_PATH.length());
 
 		if (System.getProperty(challengeId, null) == null) {
 			LOG.warning("[" + challengeId + "] system property ["
