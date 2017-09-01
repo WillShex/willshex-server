@@ -23,17 +23,16 @@ import com.willshex.server.ContextAwareServlet;
  * @author William Shakour (billy1380)
  *
  */
-@WebServlet(name = "letsencrypt", urlPatterns = ChallengeServlet.ROOT_PATH
-		+ "*")
+@SuppressWarnings("serial")
+@WebServlet(name = "letsencrypt", urlPatterns = ChallengeServlet.URL + "/*")
 @ServletSecurity(value = @HttpConstraint(transportGuarantee = TransportGuarantee.NONE))
 public class ChallengeServlet extends ContextAwareServlet {
 
-	private static final long serialVersionUID = 4205103893856450963L;
-
 	private static final Logger LOG = Logger
 			.getLogger(ChallengeServlet.class.getName());
-	public static final String ROOT_PATH = "/.well-known/acme-challenge/";
-	private static final int LENGTH = ROOT_PATH.length();
+
+	public static final String URL = "/.well-known/acme-challenge";
+	private static final int LENGTH = URL.length();
 
 	/* (non-Javadoc)
 	 * 
@@ -44,9 +43,9 @@ public class ChallengeServlet extends ContextAwareServlet {
 
 		HttpServletResponse response = RESPONSE.get();
 
-		if (!REQUEST.get().getRequestURI().startsWith(ROOT_PATH)) {
+		if (!REQUEST.get().getRequestURI().startsWith(URL)) {
 			LOG.warning("[" + REQUEST.get().getRequestURI()
-					+ "] does not start with [" + ROOT_PATH + "]");
+					+ "] does not start with [" + URL + "]");
 			response.sendError(404);
 			return;
 		}
